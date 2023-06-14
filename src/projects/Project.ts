@@ -1,9 +1,9 @@
 export class Project {
-  id: number | undefined;
+  id?: number;
   name: string = "";
   description: string = "";
   imageUrl: string = "";
-  contactTypeId: number | undefined;
+  contactTypeId?: number;
   contactSignedOn: Date = new Date();
   budget: number = 0;
   isActive: boolean = false;
