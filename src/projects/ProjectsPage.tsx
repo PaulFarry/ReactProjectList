@@ -1,11 +1,11 @@
 import { MOCK_PROJECTS } from "./MockProjects";
-import ProjectList from "./ProjectsList";
+import ProjectsList from "./ProjectsList";
 
 function ProjectsPage() {
     return (
         <>
             <h1>Projects</h1>
-            <ProjectList projects={MOCK_PROJECTS} />
+            <ProjectsList projects={MOCK_PROJECTS} />
         </>
     )
 }

@@ -1,3 +1,13 @@
+Some URLS about React and aspnet identity
+
+https://mahdi-karimipour.medium.com/implement-sign-up-with-react-redux-axios-google-recaptcha-and-asp-net-identity-9ab0f26778e9
+
+https://pellerex.com/blog/spa-with-asp-net-5-react-and-redux
+https://pellerex.com/blog/spa-api-call
+https://pellerex.com/blog/identity-change-password
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
