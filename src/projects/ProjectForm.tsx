@@ -1,11 +1,14 @@
 import { SyntheticEvent, useState } from "react";
 import { Project } from "./Project";
+import { ProjectError } from "./ProjectError";
 
 interface ProjectFormProps {
     project: Project;
     onCancel: () => void;
     onSave: (project: Project) => void;
 }
+
+
 function ProjectForm({
     project: initialProject,
     onSave,
@@ -13,8 +16,14 @@ function ProjectForm({
 }: ProjectFormProps) {
 
     const [project, setProject] = useState(initialProject);
+
+    let defaultError = new ProjectError;
+
+    const [errors, setErrors] = useState(defaultError);
+
     const handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault();
+        if (validate(project).hasError) return;
         onSave(project);
     };
 
@@ -41,19 +50,67 @@ function ProjectForm({
         setProject((p) => {
             updatedProject = new Project({ ...p, ...change });
             return updatedProject;
-        })
+        });
+        setErrors(() => {
+            let er = validate(updatedProject);
+            console.log("Validated", er);
+            return er;
+        });
+    };
+
+
+    function validate(project: Project): ProjectError {
+        let errors = new ProjectError({ name: '', description: '', budget: '' });
+        if (project.name.length === 0) {
+            errors.name = "Name is required";
+            errors.hasError = true;
+        }
+
+        if (project.name.length < 3) {
+            errors.name = "Name needs to be at least 3 characters.";
+            errors.hasError = true;
+        }
+        if (project.description.length === 0) {
+            errors.description = "Description is required";
+            errors.hasError = true;
+        }
+
+        if (project.budget <= 0) {
+            errors.budget = "Budget must be more than $0.";
+            errors.hasError = true;
+        }
+
+
+        return errors;
     }
+
+
     return (
         <form className="input-group vertical" onSubmit={handleSubmit}>
             <label htmlFor="name">Project Name</label>
             <input type="text" name="name" placeholder="enter name"
                 value={project.name} onChange={handleChange} />
+            {errors.hasError && errors.name.length > 0 && (
+                <div className="card error">
+                    <p>{errors.name}</p>
+                </div>
+            )}
             <label htmlFor="description">Project Description</label>
 
             <textarea name="description" placeholder="enter description" value={project.description} onChange={handleChange}></textarea>
+            {errors.hasError && errors.description.length > 0 && (
+                <div className="card error">
+                    <p>{errors.description}</p>
+                </div>
+            )}
             <label htmlFor="budget">Project Budget</label>
 
             <input type="number" name="budget" placeholder="enter budget" value={project.budget} onChange={handleChange} />
+            {errors.hasError && errors.budget.length > 0 && (
+                <div className="card error">
+                    <p>{errors.budget}</p>
+                </div>
+            )}
             <label htmlFor="isActive">Active?</label>
             <input type="checkbox" name="isActive" checked={project.isActive} onChange={handleChange} />
 
