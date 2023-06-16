@@ -17,7 +17,7 @@ function ProjectForm({
 
     const [project, setProject] = useState(initialProject);
 
-    let defaultError = new ProjectError;
+    let defaultError = new ProjectError();
 
     const [errors, setErrors] = useState(defaultError);
 
