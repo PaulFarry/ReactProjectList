@@ -1,6 +1,7 @@
 import '../node_modules/mini.css/dist/mini-default.min.css';
 import './App.css';
 import ProjectsPage from './projects/ProjectsPage';
+import ProjectPage from './projects/ProjectPage';
 
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
 import HomePage from './home/Homepage';
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:id" element={<ProjectPage />} />
         </Routes>
       </div>
     </Router>

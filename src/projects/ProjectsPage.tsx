@@ -14,9 +14,6 @@ function ProjectsPage() {
     }
 
     const saveProject = (project: Project) => {
-
-        console.log("Project ID = ", project.id);
-        
         projectAPI
             .put(project)
             .then((updatedProject) => {

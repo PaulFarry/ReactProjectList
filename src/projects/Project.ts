@@ -3,8 +3,8 @@ export class Project {
   name: string = "";
   description: string = "";
   imageUrl: string = "";
-  contactTypeId?: number;
-  contactSignedOn: Date = new Date();
+  contractTypeId?: number;
+  contractSignedOn: Date = new Date();
   budget: number = 0;
   isActive: boolean = false;
   get isNew(): boolean {
@@ -17,10 +17,10 @@ export class Project {
     if (initialiser.name) this.name = initialiser.name;
     if (initialiser.description) this.description = initialiser.description;
     if (initialiser.imageUrl) this.imageUrl = initialiser.imageUrl;
-    if (initialiser.contactTypeId)
-      this.contactTypeId = initialiser.contactTypeId;
-    if (initialiser.contactSignedOn)
-      this.contactSignedOn = initialiser.contactSignedOn;
+    if (initialiser.contractTypeId)
+      this.contractTypeId = initialiser.contractTypeId;
+    if (initialiser.contractSignedOn)
+      this.contractSignedOn = initialiser.contractSignedOn;
     if (initialiser.budget) this.budget = initialiser.budget;
     if (initialiser.isActive) this.isActive = initialiser.isActive;
   }

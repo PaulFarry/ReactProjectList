@@ -52,35 +52,43 @@ function convertToProjectModel(item: any): Project {
 const projectAPI = {
   async get(page = 1, limit = 20) {
     try {
-            const response = await fetch(`${url}?_page=${page}&_limit=${limit}&_sort=name`);
-            const response_1 = await checkStatus(response);
-            const data = await parseJSON(response_1);
-            return convertToProjectModels(data);
-        } catch (error) {
-            console.log("log client error " + error);
-            throw new Error(
-                "There was an error retrieving the projects. Please try again."
-            );
-        }
+      const rawResponse = await fetch(
+        `${url}?_page=${page}&_limit=${limit}&_sort=name`
+      );
+      const response = await checkStatus(rawResponse);
+      const data = await parseJSON(response);
+      return convertToProjectModels(data);
+    } catch (error) {
+      console.log("log client error " + error);
+      throw new Error(
+        "There was an error retrieving the projects. Please try again."
+      );
+    }
   },
 
   async put(project: Project) {
     try {
-          const response = await fetch(`${url}/${project.id}`, {
-              method: "PUT",
-              body: JSON.stringify(project),
-              headers: {
-                  "Content-Type": "application/json",
-              },
-          });
-          const response_1 = await checkStatus(response);
-          return parseJSON(response_1);
-      } catch (error) {
-          console.log("log client error " + error);
-          throw new Error(
-              "There was an error updating the project. Please try again."
-          );
-      }
+      const rawResponse = await fetch(`${url}/${project.id}`, {
+        method: "PUT",
+        body: JSON.stringify(project),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await checkStatus(rawResponse);
+      return parseJSON(response);
+    } catch (error) {
+      console.log("log client error " + error);
+      throw new Error(
+        "There was an error updating the project. Please try again."
+      );
+    }
+  },
+  async find(id: number): Promise<Project> {
+    const rawResponse = await fetch(`${url}/${id}`);
+    const response = await checkStatus(rawResponse);
+    const item = await parseJSON(response);
+    return convertToProjectModel(item);
   },
 };
 
