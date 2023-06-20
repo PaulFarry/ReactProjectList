@@ -6,8 +6,6 @@ interface ProjectDetailProps {
 }
 
 function ProjectDetail({ project }: ProjectDetailProps) {
-
-    console.log(project);
     const displaySigned: string = new Date(project.contractSignedOn).toLocaleDateString();
 
     return (

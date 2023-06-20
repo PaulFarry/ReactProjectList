@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { projectAPI } from "./projectAPI";
 import ProjectDetail from "./ProjectDetail";
-import { Project } from "./Project";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../state';
+import { ThunkDispatch } from 'redux-thunk';
+import { ProjectState } from './state/projectTypes';
+import { loadProject } from './state/projectActions';
+import { AnyAction } from 'redux';
+
 
 function ProjectPage(props: any) {
-    const [loading, setLoading] = useState(false);
-    const [project, setProject] = useState<Project | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const loading = useSelector((appState: AppState) => appState.projectState.loading);
+    const project = useSelector((appState: AppState) => appState.projectState.project);
+    const error = useSelector((appState: AppState) => appState.projectState.error);
+    const dispatch = useDispatch<ThunkDispatch<ProjectState, any, AnyAction>>();
     const params = useParams();
     const id = Number(params.id);
 
     useEffect(() => {
-        setLoading(true);
-        projectAPI
-            .find(id)
-            .then((data) => {
-                setProject(data);
-            })
-            .catch((e) => {
-                setError(e);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
-    }, [id]);
+        dispatch(loadProject(id));
+    }, [dispatch, id]);
 
     return (
         <div>

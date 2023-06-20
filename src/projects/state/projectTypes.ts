@@ -4,6 +4,9 @@ import { Project } from "../Project";
 export const LOAD_PROJECTS_REQUEST = "LOAD_PROJECTS_REQUEST";
 export const LOAD_PROJECTS_SUCCESS = "LOAD_PROJECTS_SUCCESS";
 export const LOAD_PROJECTS_FAILURE = "LOAD_PROJECTS_FAILURE";
+export const LOAD_PROJECT_REQUEST = "LOAD_PROJECT_REQUEST";
+export const LOAD_PROJECT_SUCCESS = "LOAD_PROJECT_SUCCESS";
+export const LOAD_PROJECT_FAILURE = "LOAD_PROJECT_FAILURE";
 export const SAVE_PROJECT_REQUEST = "SAVE_PROJECT_REQUEST";
 export const SAVE_PROJECT_SUCCESS = "SAVE_PROJECT_SUCCESS";
 export const SAVE_PROJECT_FAILURE = "SAVE_PROJECT_FAILURE";
@@ -14,14 +17,25 @@ export const DELETE_PROJECT_FAILURE = "DELETE_PROJECT_FAILURE";
 interface LoadProjectsRequest {
   type: typeof LOAD_PROJECTS_REQUEST;
 }
+interface LoadProjectRequest {
+  type: typeof LOAD_PROJECT_REQUEST;
+}
 
 interface LoadProjectsSuccess {
   type: typeof LOAD_PROJECTS_SUCCESS;
   payload: { projects: Project[]; page: number };
 }
+interface LoadProjectSuccess {
+  type: typeof LOAD_PROJECT_SUCCESS;
+  payload: { project: Project };
+}
 
 interface LoadProjectsFailure {
   type: typeof LOAD_PROJECTS_FAILURE;
+  payload: { message: string };
+}
+interface LoadProjectFailure {
+  type: typeof LOAD_PROJECT_FAILURE;
   payload: { message: string };
 }
 
@@ -57,6 +71,9 @@ export type ProjectActionTypes =
   | LoadProjectsRequest
   | LoadProjectsSuccess
   | LoadProjectsFailure
+  | LoadProjectRequest
+  | LoadProjectSuccess
+  | LoadProjectFailure
   | SaveProjectRequest
   | SaveProjectSuccess
   | SaveProjectFailure
@@ -69,4 +86,5 @@ export interface ProjectState {
   projects: Project[];
   error: string | undefined;
   page: number;
+  project: Project | undefined;
 }

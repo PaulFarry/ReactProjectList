@@ -2,6 +2,9 @@ import {
   LOAD_PROJECTS_REQUEST,
   LOAD_PROJECTS_SUCCESS,
   LOAD_PROJECTS_FAILURE,
+  LOAD_PROJECT_REQUEST,
+  LOAD_PROJECT_SUCCESS,
+  LOAD_PROJECT_FAILURE,
   SAVE_PROJECT_REQUEST,
   SAVE_PROJECT_SUCCESS,
   SAVE_PROJECT_FAILURE,
@@ -19,6 +22,7 @@ export const initialProjectState: ProjectState = {
   loading: false,
   error: undefined,
   page: 1,
+  project: undefined,
 };
 
 export function projectReducer(
@@ -26,6 +30,28 @@ export function projectReducer(
   action: ProjectActionTypes
 ) {
   switch (action.type) {
+    case LOAD_PROJECT_REQUEST: {
+      return { ...state, loading: true, error: "" };
+    }
+    case LOAD_PROJECT_SUCCESS: {
+      let theProject: Project;
+      const { project } = action.payload;
+      if (project !== undefined) {
+        theProject = action.payload.project;
+      } else {
+        theProject = new Project();
+      }
+
+      return {
+        ...state,
+        loading: false,
+        project: theProject,
+        error: "",
+      };
+    }
+    case LOAD_PROJECT_FAILURE: {
+      return { ...state, loading: false, error: action.payload.message };
+    }
     case LOAD_PROJECTS_REQUEST: {
       return { ...state, loading: true, error: "" };
     }
