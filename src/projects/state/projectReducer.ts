@@ -13,7 +13,6 @@ import {
 } from "./projectTypes";
 
 import { Project } from "../Project";
-import { stat } from "fs";
 
 export const initialProjectState: ProjectState = {
   projects: [],

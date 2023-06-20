@@ -1,60 +1,28 @@
-import { useState, Fragment, useEffect } from "react";
-import ProjectsList from "./ProjectsList";
-import { Project } from "./Project";
-import { projectAPI } from "./projectAPI";
+import { Fragment, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../state';
+import ProjectList from './ProjectList';
+import { ThunkDispatch } from 'redux-thunk';
+import { ProjectState } from './state/projectTypes';
+import { loadProjects } from './state/projectActions';
+import { AnyAction } from 'redux';
+
 
 function ProjectsPage() {
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | undefined>(undefined);
-    const [currentPage, setCurrentPage] = useState(1);
+    const loading = useSelector((appState: AppState) => appState.projectState.loading);
+    const projects = useSelector((appState: AppState) => appState.projectState.projects);
+    const error = useSelector((appState: AppState) => appState.projectState.error);
+    const currentPage = useSelector((appState: AppState) => appState.projectState.page);
+
+    const dispatch = useDispatch<ThunkDispatch<ProjectState, any, AnyAction>>();
 
     const handleMoreClick = () => {
-        setCurrentPage((currentPage) => currentPage + 1);
+        dispatch(loadProjects(currentPage + 1));
     }
-
-    const saveProject = (project: Project) => {
-        projectAPI
-            .put(project)
-            .then((updatedProject) => {
-                let updatedProjects = projects.map((p: Project) => {
-                    return p.id === project.id ? new Project(updatedProject) : p;
-                });
-                setProjects(updatedProjects);
-            })
-            .catch((e) => {
-                if (e instanceof Error) {
-                    setError(e.message);
-                }
-            });
-    }
-
 
     useEffect(() => {
-        async function loadProjects() {
-            setLoading(true);
-            try {
-                const data = await projectAPI.get(currentPage);
-                setError('');
-                setProjects(data);
-                if (currentPage === 1) {
-                    setProjects(data);
-                }
-                else {
-                    setProjects((projects) => [...projects, ...data]);
-                }
-            }
-            catch (e) {
-                if (e instanceof Error) {
-                    setError(e.message);
-                }
-            }
-            finally {
-                setLoading(false);
-            }
-        }
-        loadProjects();
-    }, [currentPage]);
+        dispatch(loadProjects(1));
+    }, [dispatch]);
 
 
     return (
@@ -74,7 +42,7 @@ function ProjectsPage() {
                 </div>
             )}
 
-            <ProjectsList projects={projects} onSave={saveProject} />
+            <ProjectList projects={projects} />
             {!loading && !error && (
                 <div className="row">
                     <div className="col-sm-12">
